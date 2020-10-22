@@ -10,21 +10,16 @@
 
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
-import {ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
-import StackNav from './navigations/stackNavigator';
+import RootNav from './navigations/rootNavigator';
+import {Provider, RootStore} from './store/index';
 
 const App = () => {
-  const client = new ApolloClient({
-    uri: 'https://api.graphql.jobs/',
-    cache: new InMemoryCache(),
-  });
-
   return (
-    <ApolloProvider client={client}>
+    <Provider value={RootStore}>
       <NavigationContainer>
-        <StackNav />
+        <RootNav />
       </NavigationContainer>
-    </ApolloProvider>
+    </Provider>
   );
 };
 

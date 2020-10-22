@@ -1,23 +1,25 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, FlatList} from 'react-native';
 import {Container} from 'native-base';
-import {job, drawerList} from '../declarations';
+import {drawerList, job} from '../declarations';
 import SearchBar from '../components/SearchBar';
 import JobContainer from '../components/jobContainer';
 import {DrawerNavigationProp} from '@react-navigation/drawer';
 import {observer} from 'mobx-react';
 import {useMst} from '../store';
 
-type HomeScreenNavigationProp = DrawerNavigationProp<drawerList, 'Home'>;
+type FavouriteScreenNavigationProp = DrawerNavigationProp<
+  drawerList,
+  'Favourite'
+>;
 
 type Props = {
-  navigation: HomeScreenNavigationProp;
+  navigation: FavouriteScreenNavigationProp;
 };
 
-const homeScreen = observer((props: Props) => {
-  const store = useMst();
+const favouriteScreen = observer((props: Props) => {
+  const {fetchingData, jobs} = useMst();
 
-  const {fetchingData, jobs} = {...store};
   const [searchTitle, setSearchTitle] = useState<String>('');
 
   if (fetchingData) {
@@ -39,7 +41,9 @@ const homeScreen = observer((props: Props) => {
       <SearchBar callback={setSearch} navigation={props.navigation} />
 
       <FlatList
-        data={jobs.slice()}
+        data={jobs.slice().filter((j) => {
+          return j.favourite;
+        })}
         renderItem={({item}) => renderItem(item)}
         keyExtractor={(item) => item.id}
       />
@@ -47,4 +51,4 @@ const homeScreen = observer((props: Props) => {
   );
 });
 
-export default homeScreen;
+export default favouriteScreen;

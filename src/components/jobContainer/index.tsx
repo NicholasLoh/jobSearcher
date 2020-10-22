@@ -1,14 +1,6 @@
 import React from 'react';
 import {FlatList, Image, TouchableOpacity} from 'react-native';
-import {
-  Container,
-  Header,
-  Content,
-  Card,
-  CardItem,
-  Body,
-  Text,
-} from 'native-base';
+import {Card, CardItem, Body, Text} from 'native-base';
 import {job} from '../../declarations';
 import styles from './styles';
 import {useNavigation} from '@react-navigation/native';
@@ -21,10 +13,6 @@ const defaultLogo = require('../../assets/defaultLogo.jpg');
 
 const JobContainer = (props: Props) => {
   const navigation = useNavigation();
-
-  const renderItem = (item: string) => {
-    return <Text>{item}</Text>;
-  };
 
   return (
     <TouchableOpacity
@@ -45,13 +33,15 @@ const JobContainer = (props: Props) => {
               <Text style={styles.companyName}>{props.job.company.name}</Text>
             </Body>
             <Body style={styles.locationContainer}>
-              {props.job.cities[0] ? (
+              {props.job.cities.slice()[0] ? (
                 <Text style={{textAlign: 'center'}}>
-                  {props.job.cities[0].name}{' '}
+                  {props.job.cities.slice()[0].name}{' '}
                 </Text>
               ) : null}
               <Text>
-                {props.job.remotes[0] ? props.job.remotes[0].name : null}
+                {props.job.remotes.slice()[0]
+                  ? props.job.remotes.slice()[0].name
+                  : null}
               </Text>
             </Body>
           </Body>

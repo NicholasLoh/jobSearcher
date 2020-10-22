@@ -1,18 +1,20 @@
-import React, {isValidElement, useEffect, useState} from 'react';
+import React from 'react';
 import {ScrollView, View} from 'react-native';
-import {Container, Badge, Text, Content} from 'native-base';
+import {Container, Badge, Text, Content, Footer, Button} from 'native-base';
 import Markdown from 'react-native-markdown-renderer';
 import {RouteProp} from '@react-navigation/native';
 import {stackList, job} from '../../declarations';
 import styles from './style';
+import {observer} from 'mobx-react';
 
 type DetailsScreenRouteProp = RouteProp<stackList, 'Details'>;
 
 type Props = {
   route: DetailsScreenRouteProp;
 };
-const detailsScreen = (props: Props) => {
-  const {job: job} = props.route.params;
+
+const detailsScreen = observer((props: Props) => {
+  const {job} = props.route.params;
 
   return (
     <Container>
@@ -35,8 +37,20 @@ const detailsScreen = (props: Props) => {
           <Markdown>{job.description}</Markdown>
         </View>
       </Content>
+
+      <Footer style={styles.footer}>
+        <Button
+          style={{alignSelf: 'auto'}}
+          onPress={() => {
+            job.changeFavourite();
+          }}>
+          <Text>
+            {job.favourite ? 'Remove from Favourite' : 'Add to Favourite'}
+          </Text>
+        </Button>
+      </Footer>
     </Container>
   );
-};
+});
 
 export default detailsScreen;
